@@ -349,11 +349,11 @@
     }
 
     // subcategory shortcuts: children on the parent page, siblings on a subcategory
-    const shortcuts = cat.children.length ? cat.children : (parent ? parent.children : []);
+    const shortcuts = (cat.children && cat.children.length) ? cat.children : (parent ? parent.children : []);
     const subcats = $('[data-subcats]', page);
     if (shortcuts.length) {
       const tiles = [];
-      if (!cat.children.length && parent) {
+      if (!(cat.children && cat.children.length) && parent) {
         tiles.push(`<li><a class="subcat" href="${listingUrl(parent.slug)}"><span class="subcat__img subcat__img--all"><svg class="icon"><use href="#i-grid"/></svg></span><span class="subcat__name">Vse ${esc(parent.name.toLowerCase())}<em>${parent.count}</em></span></a></li>`);
       }
       shortcuts.forEach((slug) => {
