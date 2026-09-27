@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="sl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Opornice – Medikem</title>
+  <meta name="description" content="Opornice za koleno, gleženj, zapestje, prste, hrbet, komolec, ramo in meča ter NRX trakovi. Mediroyal, Incrediwear in Shock Doctor. Brezplačna dostava nad 50 €.">
+  <meta name="theme-color" content="#00703c">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Medikem">
+  <meta property="og:title" content="Opornice – Medikem">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/logo-medikem.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <script src="data/products.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/shop.js" defer></script>
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.5-9.3-9.1C1.5 7.9 3.6 4.5 7 4.5c2.1 0 3.7 1.1 5 2.9 1.3-1.8 2.9-2.9 5-2.9 3.4 0 5.5 3.4 4.3 6.6-1.7 4.6-9.3 9.1-9.3 9.1Z"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.9 3.7-6.5 7.5-6.5s6.9 2.6 7.5 6.5"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5.2 8h13.6l-.9 12.1a1.5 1.5 0 0 1-1.5 1.4H7.6a1.5 1.5 0 0 1-1.5-1.4L5.2 8Z"/><path d="M8.8 10.5V7a3.2 3.2 0 0 1 6.4 0v3.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h2.6l1.5 4-2 1.4a11.5 11.5 0 0 0 6.4 6.4l1.4-2 4 1.5v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.8 7 8.2 6 8.2-6"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.8-5.9-6.8-11.3a6.8 6.8 0 0 1 13.6 0C18.8 15.1 12 21 12 21Z"/><circle cx="12" cy="9.6" r="2.4"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m14.5 6-6 6 6 6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="m8.6 13.4-1.6 7.6 5-2.6 5 2.6-1.6-7.6"/></symbol>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2.5 6.5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v10h-12v-10Z"/><path d="M14.5 9.5h3.7l3.3 3.7v3.3h-7"/><circle cx="6.8" cy="17.3" r="1.9"/><circle cx="17.3" cy="17.3" r="1.9"/></symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24"><path d="M4.5 14.5V12a7.5 7.5 0 0 1 15 0v2.5"/><rect x="3" y="13" width="4.2" height="6" rx="1.6"/><rect x="16.8" y="13" width="4.2" height="6" rx="1.6"/><path d="M18.9 19v.3a2.4 2.4 0 0 1-2.4 2.4H13"/></symbol>
+  <symbol id="i-return" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 0 1 12.9-5.2l2.1 2.2"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.9 5.2L4.5 15"/><path d="M4.5 19.5V15H9"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.8 5.8v5.6c0 4.6 3 8.1 7.2 9.6 4.2-1.5 7.2-5 7.2-9.6V5.8L12 3Z"/><path d="m8.8 12 2.3 2.3 4.3-4.6"/></symbol>
+  <symbol id="i-document" viewBox="0 0 24 24"><path d="M6.5 3h7.5l4.5 4.5v12a1.5 1.5 0 0 1-1.5 1.5H6.5A1.5 1.5 0 0 1 5 19.5v-15A1.5 1.5 0 0 1 6.5 3Z"/><path d="M13.5 3v5h5M8.5 13h7M8.5 16.5h5"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M13.4 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.7v3h2.6V21h3.1Z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.9"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6.5h9M17 6.5h3M4 12h3M11 12h9M4 17.5h11M19 17.5h1"/><circle cx="15" cy="6.5" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17.5" r="2"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M14.5 4.5h5v5M9.5 19.5h-5v-5M19.5 4.5l-6 6M4.5 19.5l6-6"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path d="m14.7 3.3 6 6L9.3 20.7l-6-6L14.7 3.3Z"/><path d="m7.6 10.4 1.8 1.8M10.4 7.6l1.8 1.8M13.2 4.8 15 6.6M4.8 13.2l1.8 1.8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+  <symbol id="i-mark" viewBox="0 0 64 64"><circle cx="32" cy="32" r="31" fill="#a0ce67" stroke="none"/><rect x="26" y="13" width="12" height="38" rx="3" fill="#fff" stroke="none"/><rect x="13" y="26" width="38" height="12" rx="3" fill="#fff" stroke="none"/></symbol>
+</svg>
+
+<a class="skip-link" href="#main">Preskoči na vsebino</a>
+
+<!-- ============ Top bar ============ -->
+<div class="topbar">
+  <div class="container topbar__inner">
+    <ul class="topbar__contact">
+      <li><a href="tel:+38628218210"><svg class="icon"><use href="#i-phone"/></svg>02 82 18 210</a></li>
+      <li><a href="mailto:ravne@medikem.si"><svg class="icon"><use href="#i-mail"/></svg>ravne@medikem.si</a></li>
+    </ul>
+    <p class="topbar__msg"><svg class="icon"><use href="#i-truck"/></svg>Brezplačna dostava po Sloveniji za nakupe nad 50&nbsp;€</p>
+    <ul class="topbar__links">
+      <li><a href="#poslovalnice">Poslovalnice</a></li>
+      <li><a href="https://www.medikem.si/moj-racun/">Moj račun</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ Header ============ -->
+<header class="site-header" data-header>
+  <div class="container header__main">
+    <button class="icon-btn header__menu-btn" type="button" aria-label="Odpri meni" aria-expanded="false" aria-controls="drawer" data-drawer-open>
+      <svg class="icon"><use href="#i-menu"/></svg>
+    </button>
+
+    <a class="logo" href="./" aria-label="Medikem – domov">
+      <img src="assets/img/logo-medikem.png" alt="Medikem – skrb za zdravje" width="320" height="150">
+    </a>
+
+    <form class="search" role="search" action="https://www.medikem.si/" method="get" data-search>
+      <label class="sr-only" for="search-input">Iskanje izdelkov</label>
+      <input id="search-input" class="search__input" type="search" name="s" placeholder="Kateri izdelek iščete?" autocomplete="off"
+             role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-results">
+      <input type="hidden" name="post_type" value="product">
+      <button class="search__btn" type="submit" aria-label="Išči">
+        <svg class="icon"><use href="#i-search"/></svg>
+      </button>
+      <div class="search__panel" id="search-results" role="listbox" aria-label="Predlogi iskanja" hidden></div>
+    </form>
+
+    <nav class="header__actions" aria-label="Uporabniški meni">
+      <a class="action action--wish" href="https://www.medikem.si/seznam-zelja/">
+        <span class="action__icon">
+          <svg class="icon"><use href="#i-heart"/></svg>
+          <span class="count" data-wish-count hidden>0</span>
+        </span>
+        <span class="action__label">Priljubljeno</span>
+      </a>
+      <a class="action action--account" href="https://www.medikem.si/moj-racun/">
+        <span class="action__icon"><svg class="icon"><use href="#i-user"/></svg></span>
+        <span class="action__label">Prijava</span>
+      </a>
+      <a class="action action--cart" href="https://www.medikem.si/kosarica/" data-cart-link>
+        <span class="action__icon">
+          <svg class="icon"><use href="#i-bag"/></svg>
+          <span class="count" data-cart-count>0</span>
+        </span>
+        <span class="action__label"><span class="sr-only">Košarica: </span><span data-cart-total>0,00 €</span></span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Category navigation -->
+  <nav class="mainnav" aria-label="Kategorije izdelkov" data-mainnav>
+    <div class="container mainnav__inner">
+      <ul class="mainnav__list">
+
+        <li class="mainnav__item has-mega">
+          <a class="mainnav__link" href="izdelki.html?kategorija=opornice">Opornice<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="mega">
+            <div class="container mega__inner">
+              <div class="mega__main">
+                <div class="mega__head">
+                  <p class="mega__title">Opornice</p>
+                  <a class="link-more" href="izdelki.html?kategorija=opornice">Poglej vse<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                </div>
+                <ul class="mega__links" style="--cols:2">
+                  <li><a href="izdelki.html?kategorija=opornica-za-koleno">Opornica za koleno</a></li>
+                  <li><a href="izdelki.html?kategorija=opornica-za-glezenj">Opornica za gleženj</a></li>
+                  <li><a href="izdelki.html?kategorija=opornica-za-zapestje">Opornica za zapestje</a></li>
+                  <li><a href="izdelki.html?kategorija=opornica-za-prste">Opornica za prste</a></li>
+                  <li><a href="izdelki.html?kategorija=opornica-za-hrbet">Opornica za hrbet</a></li>
+                  <li><a href="izdelki.html?kategorija=opornica-za-ramo">Opornica za ramo</a></li>
+                  <li><a href="izdelki.html?kategorija=opornica-za-meca">Opornica za meča</a></li>
+                  <li><a href="izdelki.html?kategorija=nrx-trakovi">NRX trakovi</a></li>
+                </ul>
+              </div>
+              <a class="mega__promo" href="https://www.medikem.si/proizvajalec/mediroyal/" tabindex="-1">
+                <img src="assets/img/hero/mediroyal-640.webp" alt="Opornice Mediroyal" width="640" height="357" loading="lazy">
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="mainnav__item has-mega">
+          <a class="mainnav__link" href="https://www.medikem.si/medicinski-pripomocki/">Medicinski pripomočki<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="mega">
+            <div class="container mega__inner">
+              <div class="mega__main">
+                <div class="mega__head">
+                  <p class="mega__title">Medicinski pripomočki</p>
+                  <a class="link-more" href="https://www.medikem.si/medicinski-pripomocki/">Poglej vse<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                </div>
+                <ul class="mega__links" style="--cols:2">
+                  <li><a href="https://www.medikem.si/vozicki/">Vozički</a></li>
+                  <li><a href="https://www.medikem.si/termometer/">Termometer</a></li>
+                  <li><a href="https://www.medikem.si/ortopedska-obutev-medicinski-pripomocki/">Ortopedska obutev</a></li>
+                  <li><a href="https://www.medikem.si/nosni-aspirator/">Nosni aspirator</a></li>
+                  <li><a href="https://www.medikem.si/misicni-stimulatorji/">Mišični stimulatorji</a></li>
+                  <li><a href="https://www.medikem.si/merilec-krvnega-tlaka/">Merilec krvnega tlaka</a></li>
+                  <li><a href="https://www.medikem.si/izposoja-medicinskih-pripomockov/">Izposoja medicinskih pripomočkov</a></li>
+                  <li><a href="https://www.medikem.si/inhalator/">Inhalator</a></li>
+                  <li><a href="https://www.medikem.si/grelna-odeja/">Grelna odeja</a></li>
+                </ul>
+              </div>
+              <a class="mega__promo mega__promo--card" href="https://www.medikem.si/merilec-krvnega-tlaka/" tabindex="-1">
+                <img src="assets/img/categories/merilci.webp" alt="" width="300" height="300" loading="lazy">
+                <span>Merilci krvnega tlaka<svg class="icon"><use href="#i-arrow-right"/></svg></span>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="mainnav__item has-mega">
+          <a class="mainnav__link" href="https://www.medikem.si/oskrba-in-nega-bolnika/">Oskrba in nega bolnika<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="mega">
+            <div class="container mega__inner">
+              <div class="mega__main">
+                <div class="mega__head">
+                  <p class="mega__title">Oskrba in nega bolnika</p>
+                  <a class="link-more" href="https://www.medikem.si/oskrba-in-nega-bolnika/">Poglej vse<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                </div>
+                <ul class="mega__links" style="--cols:3">
+                  <li><a href="https://www.medikem.si/inkontinencne-podloge-in-prevleke/">Inkontinenčne podloge in prevleke</a></li>
+                  <li><a href="https://www.medikem.si/mobilne-hlacke/">Mobilne hlačke</a></li>
+                  <li><a href="https://www.medikem.si/negovalne-in-bolniske-postelje/">Negovalne in bolniške postelje</a></li>
+                  <li><a href="https://www.medikem.si/posteljne-podloge/">Posteljne podloge</a></li>
+                  <li><a href="https://www.medikem.si/pripomocki-za-hojo/">Pripomočki za hojo</a></li>
+                  <li><a href="https://www.medikem.si/sanitarni-pripomocki/">Sanitarni pripomočki</a></li>
+                  <li><a href="https://www.medikem.si/zascita-za-posteljo/">Zaščita za posteljo</a></li>
+                  <li><a href="https://www.medikem.si/kozmetika/">Kozmetika</a></li>
+                  <li><a href="https://www.medikem.si/oskrba-rane/">Oskrba rane</a></li>
+                  <li><a href="https://www.medikem.si/seti-za-prevezo/">Seti za prevezo</a></li>
+                  <li><a href="https://www.medikem.si/zascita/">Zaščita</a></li>
+                </ul>
+              </div>
+              <a class="mega__promo" href="https://www.medikem.si/proizvajalec/timago/" tabindex="-1">
+                <img src="assets/img/hero/timago-640.webp" alt="Timago – medicinska in rehabilitacijska oprema" width="640" height="357" loading="lazy">
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="mainnav__item has-mega">
+          <a class="mainnav__link" href="https://www.medikem.si/rehabilitacija/">Rehabilitacija<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="mega">
+            <div class="container mega__inner">
+              <div class="mega__main">
+                <div class="mega__head">
+                  <p class="mega__title">Rehabilitacija</p>
+                  <a class="link-more" href="https://www.medikem.si/rehabilitacija/">Poglej vse<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                </div>
+                <ul class="mega__links" style="--cols:3">
+                  <li><a href="https://www.medikem.si/blazine-za-vadbo/">Blazine za vadbo</a></li>
+                  <li><a href="https://www.medikem.si/hladilne-kreme/">Hladilne kreme</a></li>
+                  <li><a href="https://www.medikem.si/kompresija/">Kompresija</a></li>
+                  <li><a href="https://www.medikem.si/masazni-valji/">Masažni valji</a></li>
+                  <li><a href="https://www.medikem.si/ogrevalne-kreme/">Ogrevalne kreme</a></li>
+                  <li><a href="https://www.medikem.si/pripomocki-za-masazo/">Pripomočki za masažo</a></li>
+                  <li><a href="https://www.medikem.si/ravnotezje/">Ravnotežje</a></li>
+                  <li><a href="https://www.medikem.si/terapija-rok/">Terapija rok</a></li>
+                  <li><a href="https://www.medikem.si/trakovi-za-vadbo/">Trakovi za vadbo</a></li>
+                  <li><a href="https://www.medikem.si/zoge-za-vadbo-in-sedenje/">Žoge za vadbo in sedenje</a></li>
+                </ul>
+              </div>
+              <a class="mega__promo" href="https://www.medikem.si/hladilne-kreme/" tabindex="-1">
+                <img src="assets/img/hero/polar-frost-640.webp" alt="Polar Frost hladilni gel" width="640" height="357" loading="lazy">
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="mainnav__item has-dropdown">
+          <a class="mainnav__link" href="https://www.medikem.si/sapimed/">Sapimed<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="dropdown">
+            <ul class="mega__links" style="--cols:1">
+              <li><a href="https://www.medikem.si/proktoskop/">Proktoskop</a></li>
+              <li><a href="https://www.medikem.si/sapimed/">Vsi izdelki Sapimed</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="mainnav__item has-mega">
+          <a class="mainnav__link" href="https://www.medikem.si/sportni-program/">Športni program<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="mega">
+            <div class="container mega__inner">
+              <div class="mega__main">
+                <div class="mega__head">
+                  <p class="mega__title">Športni program</p>
+                  <a class="link-more" href="https://www.medikem.si/sportni-program/">Poglej vse<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                </div>
+                <ul class="mega__links" style="--cols:3">
+                  <li><a href="https://www.medikem.si/kompresijske-hlace/">Kompresijske hlače</a></li>
+                  <li><a href="https://www.medikem.si/kompresijske-majice/">Kompresijske majice</a></li>
+                  <li><a href="https://www.medikem.si/kompresijske-nogavice/">Kompresijske nogavice</a></li>
+                  <li><a href="https://www.medikem.si/oblacila-za-tek/">Oblačila za tek</a></li>
+                  <li><a href="https://www.medikem.si/bandazni-trakovi/">Bandažni trakovi</a></li>
+                  <li><a href="https://www.medikem.si/kinezio-trakovi/">Kinezio trakovi</a></li>
+                  <li><a href="https://www.medikem.si/ekipni-sporti/">Ekipni športi</a></li>
+                  <li><a href="https://www.medikem.si/prva-pomoc/">Prva pomoč</a></li>
+                  <li><a href="https://www.medikem.si/masazna-olja/">Masažna olja</a></li>
+                  <li><a href="https://www.medikem.si/pripomocki-za-masazo-sportni-program/">Pripomočki za masažo</a></li>
+                  <li><a href="https://www.medikem.si/vlozki-za-cevlje/">Vložki za čevlje</a></li>
+                  <li><a href="https://www.medikem.si/sportni-napitki/">Športni napitki</a></li>
+                  <li><a href="https://www.medikem.si/energijski-geli-in-cokoladice/">Energijski geli in čokoladice</a></li>
+                  <li><a href="https://www.medikem.si/aminokisline/">Aminokisline</a></li>
+                  <li><a href="https://www.medikem.si/dodatki-k-prehrani-sportni-program/">Dodatki k prehrani</a></li>
+                </ul>
+              </div>
+              <a class="mega__promo" href="https://www.medikem.si/?s=d3+trak&amp;post_type=product" tabindex="-1">
+                <img src="assets/img/hero/d3-640.webp" alt="d3 športni trakovi" width="640" height="357" loading="lazy">
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="mainnav__item has-mega">
+          <a class="mainnav__link" href="https://www.medikem.si/incrediwear/">Incrediwear<svg class="icon chev"><use href="#i-chevron-down"/></svg></a>
+          <div class="mega">
+            <div class="container mega__inner">
+              <div class="mega__main">
+                <div class="mega__head">
+                  <p class="mega__title">Incrediwear</p>
+                  <a class="link-more" href="https://www.medikem.si/incrediwear/">Poglej vse<svg class="icon"><use href="#i-arrow-right"/></svg></a>
+                </div>
+                <ul class="mega__links" style="--cols:1">
+                  <li><a href="https://www.medikem.si/zgornji-del-telesa/">Zgornji del telesa</a></li>
+                  <li><a href="https://www.medikem.si/spodnji-del-telesa/">Spodnji del telesa</a></li>
+                  <li><a href="https://www.medikem.si/oblacila-in-nogavice/">Oblačila in nogavice</a></li>
+                </ul>
+              </div>
+              <a class="mega__promo" href="https://www.medikem.si/incrediwear/" tabindex="-1">
+                <img src="assets/img/hero/incrediwear-640.webp" alt="Incrediwear – lajša bolečino, izboljša prekrvavitev, pospeši okrevanje" width="640" height="357" loading="lazy">
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+      <a class="mainnav__zzzs" href="https://www.medikem.si/zzzs-narocilnica-za-izdajo-in-izposojo-pripomockov/" title="ZZZS naročilnica za izdajo in izposojo pripomočkov">
+        <svg class="icon"><use href="#i-document"/></svg>ZZZS naročilnica
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="shop" data-listing>
+  <div class="container">
+    <nav class="crumbs" aria-label="Drobtine">
+      <ol data-crumbs>
+        <li><a href="./">Domov</a></li>
+        <li aria-current="page">Opornice</li>
+      </ol>
+    </nav>
+
+    <header class="cat-hero">
+      <div class="cat-hero__text">
+        <p class="eyebrow" data-cat-eyebrow>&nbsp;</p>
+        <h1 class="cat-hero__title" data-cat-title>Opornice</h1>
+        <div class="cat-hero__intro" data-cat-intro></div>
+        <ul class="cat-hero__facts">
+          <li><svg class="icon"><use href="#i-truck"/></svg>Brezplačna dostava nad 50&nbsp;€</li>
+          <li><svg class="icon"><use href="#i-return"/></svg>Vračilo v roku 14 dni</li>
+          <li><svg class="icon"><use href="#i-headset"/></svg>Svetovanje: <a href="tel:+38628218210">02 82 18 210</a></li>
+        </ul>
+      </div>
+      <div class="cat-hero__media" data-cat-media></div>
+    </header>
+
+    <nav class="subcats" data-subcats aria-label="Podkategorije" hidden></nav>
+
+    <div class="shop__layout">
+      <div class="filters-shell" data-filters-shell hidden>
+        <div class="drawer__backdrop" data-panel-close></div>
+        <aside class="drawer__panel filters" id="filters" aria-label="Filtri">
+          <div class="filters__head">
+            <h2 class="filters__title">Filtri</h2>
+            <button class="icon-btn filters__close" type="button" aria-label="Zapri filtre" data-panel-close><svg class="icon"><use href="#i-close"/></svg></button>
+          </div>
+
+          <div class="filters__body">
+            <section class="filter filter--cats" aria-labelledby="f-cat">
+              <h3 class="filter__title" id="f-cat">Kategorije</h3>
+              <ul class="cat-tree" data-cat-tree></ul>
+            </section>
+
+            <section class="filter" aria-labelledby="f-price">
+              <h3 class="filter__title" id="f-price">Cena</h3>
+              <div class="price-range" data-f-range>
+                <input type="range" data-f-min aria-label="Najnižja cena">
+                <input type="range" data-f-max aria-label="Najvišja cena">
+              </div>
+              <div class="price-range__labels"><span data-f-min-label></span><span data-f-max-label></span></div>
+            </section>
+
+            <div class="filter-group" data-f-attrs></div>
+
+            <section class="filter" aria-labelledby="f-stock">
+              <h3 class="filter__title" id="f-stock">Zaloga</h3>
+              <label class="toggle">
+                <input type="checkbox" data-f-stock>
+                <span class="toggle__ui" aria-hidden="true"></span>
+                <span><strong>Samo izdelki na zalogi</strong></span>
+              </label>
+            </section>
+
+            <section class="filter" aria-labelledby="f-brand">
+              <h3 class="filter__title" id="f-brand">Znamka</h3>
+              <div class="fchips" data-f-brands role="group" aria-labelledby="f-brand"></div>
+            </section>
+          </div>
+
+          <div class="filters__foot">
+            <button class="btn btn--outline" type="button" data-filters-clear>Počisti</button>
+            <button class="btn btn--primary" type="button" data-panel-close data-apply-count>Prikaži izdelke</button>
+          </div>
+        </aside>
+      </div>
+
+      <div class="shop__main">
+        <div class="toolbar">
+          <button class="btn btn--outline toolbar__filters" type="button" data-filters-open aria-expanded="false" aria-controls="filters">
+            <svg class="icon"><use href="#i-filter"/></svg>Filtri<span class="count-pill" data-filter-count hidden>0</span>
+          </button>
+          <p class="toolbar__count" data-count aria-live="polite"></p>
+          <label class="sort">
+            <span class="sort__label">Razvrsti</span>
+            <select data-sort>
+              <option value="default">Privzeto</option>
+              <option value="priljubljenost">Po priljubljenosti</option>
+              <option value="najnovejse">Najnovejše</option>
+              <option value="cena-narascajoce">Cena: od najnižje</option>
+              <option value="cena-padajoce">Cena: od najvišje</option>
+            </select>
+            <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+          </label>
+        </div>
+
+        <div class="active-filters" data-active hidden></div>
+
+        <ul class="shop-grid" data-grid></ul>
+
+        <div class="more" data-more hidden>
+          <p class="more__text" data-more-text></p>
+          <div class="more__bar" data-more-bar><span></span></div>
+          <button class="btn btn--outline btn--lg" type="button" data-more-btn>Naloži več izdelkov</button>
+        </div>
+
+        <div class="shop-empty" data-empty hidden>
+          <span class="shop-empty__icon"><svg class="icon"><use href="#i-filter"/></svg></span>
+          <p><strong>Ni izdelkov, ki ustrezajo izbranim filtrom.</strong></p>
+          <p>Poskusite z drugo velikostjo ali širšim cenovnim razponom.</p>
+          <button class="btn btn--primary" type="button" data-filters-clear>Počisti filtre</button>
+        </div>
+
+        <noscript><p class="shop-empty">Za prikaz izdelkov omogočite JavaScript ali si oglejte <a href="https://www.medikem.si/opornice/">opornice na medikem.si</a>.</p></noscript>
+      </div>
+    </div>
+  </div>
+
+  <section class="guide" data-guide hidden aria-labelledby="guide-title">
+    <div class="container">
+      <div class="section__head">
+        <h2 class="section__title" id="guide-title" data-guide-title>Vodnik</h2>
+      </div>
+      <div class="guide__grid">
+        <nav class="guide__toc" aria-label="Vsebina">
+          <p class="guide__toc-title">Vsebina</p>
+          <ol data-guide-toc></ol>
+        </nav>
+        <article class="guide__article prose" data-guide-article></article>
+      </div>
+      <div class="faq" data-faq-wrap hidden>
+        <h2 class="faq__title">Pogosta vprašanja</h2>
+        <div class="faq__list" data-faq></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Service promises ============ -->
+  <section class="features" aria-label="Nakup pri Medikemu">
+    <div class="container">
+      <ul class="features__list">
+        <li>
+          <a class="feature" href="https://www.medikem.si/?s=&amp;post_type=product&amp;orderby=popularity">
+            <span class="feature__icon"><svg class="icon"><use href="#i-award"/></svg></span>
+            <span><strong>Kvalitetni izdelki</strong><small>Preverjeni proizvajalci</small></span>
+          </a>
+        </li>
+        <li>
+          <a class="feature" href="https://www.medikem.si/nakup-in-dostava/">
+            <span class="feature__icon"><svg class="icon"><use href="#i-truck"/></svg></span>
+            <span><strong>Hitra dostava</strong><small>V 1–4 delovnih dneh, nad 50&nbsp;€ brezplačno</small></span>
+          </a>
+        </li>
+        <li>
+          <a class="feature" href="https://www.medikem.si/kontakt/">
+            <span class="feature__icon"><svg class="icon"><use href="#i-headset"/></svg></span>
+            <span><strong>Kontaktirajte nas</strong><small>02 82 18 210</small></span>
+          </a>
+        </li>
+        <li>
+          <a class="feature" href="https://www.medikem.si/reklamacije/">
+            <span class="feature__icon"><svg class="icon"><use href="#i-return"/></svg></span>
+            <span><strong>Hitra reklamacija</strong><small>Nov izdelek ali vračilo kupnine</small></span>
+          </a>
+        </li>
+        <li>
+          <a class="feature" href="https://www.medikem.si/nacin-placila/">
+            <span class="feature__icon"><svg class="icon"><use href="#i-shield"/></svg></span>
+            <span><strong>Varen nakup</strong><small>Kartice, povzetje ali predračun</small></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<!-- ============ Footer ============ -->
+<footer class="site-footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a class="logo logo--footer" href="./" aria-label="Medikem – domov">
+        <img src="assets/img/logo-medikem.png" alt="Medikem – skrb za zdravje" width="320" height="150" loading="lazy">
+      </a>
+      <a class="footer__phone" href="tel:+38628218210">+386 (0)2 82 18 210</a>
+      <address>
+        PE Prežihova ulica 22,<br>2390 Ravne na Koroškem<br>
+        <a href="mailto:ravne@medikem.si">ravne@medikem.si</a>
+      </address>
+      <ul class="social">
+        <li><a href="https://sl-si.facebook.com/medikem.si/" aria-label="Medikem na Facebooku" target="_blank" rel="noopener"><svg class="icon"><use href="#i-facebook"/></svg></a></li>
+        <li><a href="https://www.instagram.com/medikem.bt/" aria-label="Medikem na Instagramu" target="_blank" rel="noopener"><svg class="icon"><use href="#i-instagram"/></svg></a></li>
+      </ul>
+    </div>
+
+    <nav class="footer__col" aria-labelledby="f-podjetje">
+      <h2 class="footer__title" id="f-podjetje">Podjetje</h2>
+      <ul>
+        <li><a href="https://www.medikem.si/o-podjetju/">O podjetju</a></li>
+        <li><a href="https://www.medikem.si/poslovalnice/">Obiščite nas</a></li>
+        <li><a href="https://www.medikem.si/blog/">Blog</a></li>
+        <li><a href="https://www.medikem.si/kontakt/">Kontakt</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-labelledby="f-prodajna">
+      <h2 class="footer__title" id="f-prodajna">Prodajna mesta</h2>
+      <ul>
+        <li><a href="https://www.medikem.si/poslovalnica-ravne-na-koroskem/">Poslovalnica Ravne na Koroškem</a></li>
+        <li><a href="https://www.medikem.si/poslovalnica-muta/">Poslovalnica Muta</a></li>
+        <li><a href="https://www.medikem.si/zzzs-narocilnica-za-izdajo-in-izposojo-pripomockov/">ZZZS naročilnica</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-labelledby="f-pomoc">
+      <h2 class="footer__title" id="f-pomoc">Pomoč</h2>
+      <ul>
+        <li><a href="https://www.medikem.si/splosni-pogoji-poslovanja/">Splošni pogoji poslovanja</a></li>
+        <li><a href="https://www.medikem.si/varovanje-osebnih-podatkov/">Varovanje osebnih podatkov</a></li>
+        <li><a href="https://www.medikem.si/nacin-placila/">Način plačila</a></li>
+        <li><a href="https://www.medikem.si/nakup-in-dostava/">Nakup in dostava</a></li>
+        <li><a href="https://www.medikem.si/reklamacije/">Reklamacije</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__newsletter">
+      <h2 class="footer__title" id="f-news">Naročite se na naše e-novice</h2>
+      <form class="newsletter" data-newsletter novalidate aria-labelledby="f-news">
+        <div class="newsletter__row">
+          <label class="sr-only" for="nl-email">E-poštni naslov</label>
+          <input id="nl-email" type="email" name="email" placeholder="E-poštni naslov" autocomplete="email" required>
+          <button class="btn btn--primary" type="submit">Prijava</button>
+        </div>
+        <label class="check">
+          <input type="checkbox" name="consent" required>
+          <span>S posredovanjem e-naslova soglašam, da Medikem d.o.o. moj elektronski naslov uporablja za namene obveščanja o novostih in se strinjam s <a href="https://www.medikem.si/splosni-pogoji-poslovanja/">splošnimi pogoji</a>.</span>
+        </label>
+        <p class="newsletter__msg" data-newsletter-msg role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <div class="footer__badges">
+        <img src="assets/img/badges/boniteta-aaa.png" alt="Bonitetna odličnost AAA 2022, Dun &amp; Bradstreet" width="480" height="132" loading="lazy">
+        <img src="assets/img/badges/pogodbeni-zzzs.png" alt="Pogodbeni dobavitelj medicinskih pripomočkov ZZZS" width="135" height="96" loading="lazy">
+      </div>
+      <ul class="payments" aria-label="Načini plačila">
+        <li>Visa</li><li>Mastercard</li><li>Maestro</li><li>Diners</li><li>Po povzetju</li><li>Predračun</li>
+      </ul>
+      <p class="footer__legal">© <span data-year>2026</span> Medikem d.o.o., skrb za zdravje · Prežihova ulica 13, 2390 Ravne na Koroškem · ID za DDV SI22319646</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ Mobile drawer (filled by JS from the main nav) ============ -->
+<div class="drawer" id="drawer" hidden data-drawer>
+  <div class="drawer__backdrop" data-panel-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Meni">
+    <div class="drawer__head">
+      <img src="assets/img/logo-medikem.png" alt="Medikem" width="320" height="150">
+      <button class="icon-btn" type="button" aria-label="Zapri meni" data-panel-close><svg class="icon"><use href="#i-close"/></svg></button>
+    </div>
+    <nav class="drawer__nav" aria-label="Kategorije" data-drawer-nav></nav>
+    <ul class="drawer__links">
+      <li><a href="https://www.medikem.si/zzzs-narocilnica-za-izdajo-in-izposojo-pripomockov/"><svg class="icon"><use href="#i-document"/></svg>ZZZS naročilnica</a></li>
+      <li><a href="#poslovalnice" data-panel-close><svg class="icon"><use href="#i-pin"/></svg>Poslovalnice</a></li>
+      <li><a href="https://www.medikem.si/seznam-zelja/"><svg class="icon"><use href="#i-heart"/></svg>Priljubljeno</a></li>
+      <li><a href="https://www.medikem.si/moj-racun/"><svg class="icon"><use href="#i-user"/></svg>Moj račun</a></li>
+    </ul>
+    <div class="drawer__contact">
+      <a href="tel:+38628218210"><svg class="icon"><use href="#i-phone"/></svg>02 82 18 210</a>
+      <a href="mailto:ravne@medikem.si"><svg class="icon"><use href="#i-mail"/></svg>ravne@medikem.si</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Toast ============ -->
+<div class="toast" role="status" aria-live="polite" data-toast hidden>
+  <img class="toast__img" src="" alt="" width="56" height="56">
+  <div class="toast__body">
+    <p class="toast__title"><svg class="icon"><use href="#i-check"/></svg>Dodano v košarico</p>
+    <p class="toast__name" data-toast-name></p>
+  </div>
+  <button class="toast__link" type="button" data-minicart-open>Košarica</button>
+</div>
+
+<!-- ============ Mini cart ============ -->
+<div class="drawer drawer--right minicart" id="minicart" hidden data-minicart>
+  <div class="drawer__backdrop" data-panel-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="minicart-title">
+    <div class="drawer__head">
+      <h2 class="minicart__title" id="minicart-title">Košarica <span class="minicart__count" data-minicart-count>0</span></h2>
+      <button class="icon-btn" type="button" aria-label="Zapri košarico" data-panel-close><svg class="icon"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="minicart__ship" data-minicart-ship>
+      <p data-ship-text></p>
+      <div class="minicart__bar" data-ship-bar><span></span></div>
+    </div>
+    <ul class="minicart__items" data-minicart-items></ul>
+    <div class="minicart__empty" data-minicart-empty>
+      <span class="minicart__empty-icon"><svg class="icon"><use href="#i-bag"/></svg></span>
+      <p><strong>Vaša košarica je prazna.</strong></p>
+      <p>Oglejte si naše opornice in medicinske pripomočke.</p>
+      <a class="btn btn--primary" href="izdelki.html?kategorija=opornice">Oglejte si opornice</a>
+    </div>
+    <div class="minicart__foot" data-minicart-foot>
+      <dl class="minicart__sum">
+        <div><dt>Vmesni seštevek</dt><dd data-minicart-subtotal></dd></div>
+        <div><dt>Dostava po Sloveniji</dt><dd data-minicart-shipping></dd></div>
+        <div class="is-total"><dt>Skupaj</dt><dd data-minicart-total></dd></div>
+      </dl>
+      <a class="btn btn--primary btn--block btn--lg" href="https://www.medikem.si/kosarica/">Na blagajno</a>
+      <button class="btn btn--outline btn--block" type="button" data-panel-close>Nadaljuj z nakupovanjem</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Cookie notice ============ -->
+<div class="cookies" role="region" aria-label="Obvestilo o piškotkih" data-cookies hidden>
+  <p class="cookies__text">Spletna stran uporablja piškotke z namenom zagotavljanja spletne storitve, analize uporabe, oglasnih sistemov in funkcionalnosti, ki jih brez piškotkov ne bi mogli nuditi. <a href="https://www.medikem.si/sl/piskotki/">Politika piškotkov</a></p>
+  <div class="cookies__settings" data-cookie-settings hidden>
+    <label class="toggle">
+      <input type="checkbox" checked disabled>
+      <span class="toggle__ui" aria-hidden="true"></span>
+      <span><strong>Nujni piškotki</strong><small>Brez njih spletna stran ne more delovati.</small></span>
+    </label>
+    <label class="toggle">
+      <input type="checkbox" data-cookie-analytics>
+      <span class="toggle__ui" aria-hidden="true"></span>
+      <span><strong>Tretjeosebni piškotki</strong><small>Google Analytics za anonimno statistiko obiska.</small></span>
+    </label>
+  </div>
+  <div class="cookies__actions">
+    <button class="btn btn--primary" type="button" data-cookie-accept>Sprejmem</button>
+    <button class="btn btn--outline" type="button" data-cookie-toggle aria-expanded="false">Nastavitve</button>
+  </div>
+</div>
+
+</body>
+</html>
