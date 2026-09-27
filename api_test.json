@@ -1,0 +1,114 @@
+{
+  "id": 24292,
+  "date": "2026-09-23T15:42:56",
+  "date_gmt": "2026-09-23T13:42:56",
+  "guid": {
+    "rendered": "https://www.medikem.si/?post_type=product&#038;p=24292"
+  },
+  "modified": "2026-09-23T15:43:49",
+  "modified_gmt": "2026-09-23T13:43:49",
+  "slug": "polar-frost-roll-on-75ml",
+  "status": "publish",
+  "type": "product",
+  "link": "https://www.medikem.si/hladilne-kreme/polar-frost-roll-on-75ml/",
+  "title": {
+    "rendered": "POLAR FROST ROLL-ON 75ml"
+  },
+  "content": {
+    "rendered": "<p>Roll-on aplikator omogoča enostaven, natančen in higieničen nanos, brez potrebe po neposrednem dotikanju izdelka z rokami. Gel lahko tako hitro in enakomerno nanesete neposredno na želeni predel telesa. Kompaktna embalaža s 75ml vsebine je priročna za športno torbo, potovanja, delo ali vsakodnevno uporabo.</p>\n<p>Polar Frost Roll-On je primeren za uporabo na različnih predelih telesa, kjer želite občutek hlajenja in osvežitve. Zaradi praktičnega načina nanašanja je posebej uporaben po vadbi, daljših sprehodih, fizičnem delu ali drugih aktivnostih.</p>\n<p>&nbsp;</p>\n<p>PREDNOSTI:</p>\n<ul>\n<li>hladilni in osvežilni učinek</li>\n<li>praktičen roll-on aplikator za enostaven nanos</li>\n<li>omogoča natančen lokalni nanos</li>\n<li>brez potrebe po nanašanju z rokami</li>\n<li>primeren po športnih in fizičnih aktivnostih</li>\n<li>priročna embalaža s 75ml vsebine</li>\n<li>idealen za športno torbo, potovanja ali uporabo na poti</li>\n<li>enostavna in hitra uporaba</li>\n</ul>\n<p>&nbsp;</p>\n<p>NAČIN UPORABE</p>\n<p>Izdelek z roll-on aplikatorjem nanesite neposredno na želeni predel kože. Po potrebi lahko nanos ponovite skladno z navodili proizvajalca. Po uporabi pustite, da se izdelek vpije oziroma posuši.</p>\n<p>OPOZORILO</p>\n<p>Izdelek je namenjen zunanji uporabi. Ne nanašajte na poškodovano, razdraženo ali poškodovano kožo. Izogibajte se stiku z očmi in sluznicami. Po uporabi si po potrebi umijte roke. Hranite zunaj dosega otrok. Pred uporabo vedno upoštevajte navodila in opozorila proizvajalca, navedena na embalaži.</p>\n",
+    "protected": false
+  },
+  "excerpt": {
+    "rendered": "<p>Polar Frost Roll-on 75ml je praktičen hladilni gel v obliki roll-ona, namenjen lokalnemu nanosu na kožo. Zaradi hladilnega učinka zagotavlja prijeten občutek svežine in osvežitve ter je posebej primeren za uporabo po športnih in drugih fizičnih aktivnostih, ko so mišice in sklepi bolj obremenjeni.</p>\n",
+    "protected": false
+  },
+  "featured_media": 24304,
+  "comment_status": "open",
+  "ping_status": "closed",
+  "template": "",
+  "meta": [],
+  "product_brand": [],
+  "product_cat": [
+    2972
+  ],
+  "product_tag": [],
+  "class_list": [
+    "post-24292",
+    "product",
+    "type-product",
+    "status-publish",
+    "has-post-thumbnail",
+    "product_cat-hladilne-kreme",
+    "brand-polar",
+    "first",
+    "instock",
+    "taxable",
+    "shipping-taxable",
+    "purchasable",
+    "product-type-simple"
+  ],
+  "acf": [],
+  "_links": {
+    "self": [
+      {
+        "href": "https://www.medikem.si/wp-json/wp/v2/product/24292",
+        "targetHints": {
+          "allow": [
+            "GET"
+          ]
+        }
+      }
+    ],
+    "collection": [
+      {
+        "href": "https://www.medikem.si/wp-json/wp/v2/product"
+      }
+    ],
+    "about": [
+      {
+        "href": "https://www.medikem.si/wp-json/wp/v2/types/product"
+      }
+    ],
+    "replies": [
+      {
+        "embeddable": true,
+        "href": "https://www.medikem.si/wp-json/wp/v2/comments?post=24292"
+      }
+    ],
+    "wp:featuredmedia": [
+      {
+        "embeddable": true,
+        "href": "https://www.medikem.si/wp-json/wp/v2/media/24304"
+      }
+    ],
+    "wp:attachment": [
+      {
+        "href": "https://www.medikem.si/wp-json/wp/v2/media?parent=24292"
+      }
+    ],
+    "wp:term": [
+      {
+        "taxonomy": "product_brand",
+        "embeddable": true,
+        "href": "https://www.medikem.si/wp-json/wp/v2/product_brand?post=24292"
+      },
+      {
+        "taxonomy": "product_cat",
+        "embeddable": true,
+        "href": "https://www.medikem.si/wp-json/wp/v2/product_cat?post=24292"
+      },
+      {
+        "taxonomy": "product_tag",
+        "embeddable": true,
+        "href": "https://www.medikem.si/wp-json/wp/v2/product_tag?post=24292"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}

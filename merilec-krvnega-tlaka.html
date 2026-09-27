@@ -1,12 +1,13 @@
 <!DOCTYPE html><html lang="sl"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Opornice – Medikem</title>
-  <meta name="description" content="Opornice za koleno, gleženj, zapestje, prste, hrbet, komolec, ramo in meča ter NRX trakovi. Mediroyal, Incrediwear in Shock Doctor. Brezplačna dostava nad 50 €.">
+  <title>Merilec krvnega tlaka – Medikem</title>
+  <meta name="description" content="Specializirana prodajalna medicinskih in ortopedskih pripomočkov, izdelkov za nego bolnika, rehabilitacijo in šport. Poslovalnici na Ravnah na Koroškem in na Muti. Pogodbeni dobavitelj ZZZS.">
   <meta name="theme-color" content="#00703c">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Medikem">
-  <meta property="og:title" content="Opornice – Medikem">
+  <meta property="og:title" content="Medikem – skrb za zdravje">
+  <meta property="og:image" content="assets/img/hero/incrediwear.webp">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/logo-medikem.png">
 
@@ -14,10 +15,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&amp;display=swap">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/shop.css">
   <script src="data/products.js" defer=""></script>
   <script src="js/main.js" defer=""></script>
-  <script src="js/shop.js" defer=""></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["MedicalBusiness", "Organization"],
+    "name": "Medikem d.o.o.",
+    "slogan": "skrb za zdravje",
+    "url": "https://www.medikem.si",
+    "logo": "https://www.medikem.si/wp-content/uploads/2020/11/logo.png",
+    "telephone": "+386 2 82 18 210",
+    "email": "ravne@medikem.si",
+    "department": [
+      {
+        "@type": "Store",
+        "name": "Medikem – poslovalnica Ravne na Koroškem",
+        "telephone": "+386 2 82 18 210",
+        "address": { "@type": "PostalAddress", "streetAddress": "Prežihova ulica 22", "postalCode": "2390", "addressLocality": "Ravne na Koroškem", "addressCountry": "SI" },
+        "openingHours": ["Mo-Fr 08:00-19:00", "Sa 08:00-13:00"]
+      },
+      {
+        "@type": "Store",
+        "name": "Medikem – poslovalnica Muta",
+        "telephone": "+386 2 87 61 955",
+        "address": { "@type": "PostalAddress", "streetAddress": "Glavni trg 46", "postalCode": "2366", "addressLocality": "Muta", "addressCountry": "SI" },
+        "openingHours": ["Mo-We 08:00-16:00", "Th 10:00-17:00", "Fr 08:00-16:00"]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -309,177 +337,12 @@
   </nav>
 </header>
 
-<main id="main" class="shop" data-listing="">
-  <div class="container">
-    <nav class="crumbs" aria-label="Drobtine">
-      <ol data-crumbs="">
-        <li><a href="index.html">Domov</a></li>
-        <li aria-current="page">Opornice</li>
-      </ol>
-    </nav>
 
-    <header class="cat-hero">
-      <div class="cat-hero__text">
-        <p class="eyebrow" data-cat-eyebrow="">&nbsp;</p>
-        <h1 class="cat-hero__title" data-cat-title="">Opornice</h1>
-        <div class="cat-hero__intro" data-cat-intro=""></div>
-        <ul class="cat-hero__facts">
-          <li><svg class="icon"><use href="#i-truck"></use></svg>Brezplačna dostava nad 50&nbsp;€</li>
-          <li><svg class="icon"><use href="#i-return"></use></svg>Vračilo v roku 14 dni</li>
-          <li><svg class="icon"><use href="#i-headset"></use></svg>Svetovanje: <a href="tel:+38628218210">02 82 18 210</a></li>
-        </ul>
-      </div>
-      <div class="cat-hero__media" data-cat-media=""></div>
-    </header>
-
-    <nav class="subcats" data-subcats="" aria-label="Podkategorije" hidden=""></nav>
-
-    <div class="shop__layout">
-      <div class="filters-shell" data-filters-shell="" hidden="">
-        <div class="drawer__backdrop" data-panel-close=""></div>
-        <aside class="drawer__panel filters" id="filters" aria-label="Filtri">
-          <div class="filters__head">
-            <h2 class="filters__title">Filtri</h2>
-            <button class="icon-btn filters__close" type="button" aria-label="Zapri filtre" data-panel-close=""><svg class="icon"><use href="#i-close"></use></svg></button>
-          </div>
-
-          <div class="filters__body">
-            <section class="filter filter--cats" aria-labelledby="f-cat">
-              <h3 class="filter__title" id="f-cat">Kategorije</h3>
-              <ul class="cat-tree" data-cat-tree=""></ul>
-            </section>
-
-            <section class="filter" aria-labelledby="f-price">
-              <h3 class="filter__title" id="f-price">Cena</h3>
-              <div class="price-range" data-f-range="">
-                <input type="range" data-f-min="" aria-label="Najnižja cena">
-                <input type="range" data-f-max="" aria-label="Najvišja cena">
-              </div>
-              <div class="price-range__labels"><span data-f-min-label=""></span><span data-f-max-label=""></span></div>
-            </section>
-
-            <div class="filter-group" data-f-attrs=""></div>
-
-            <section class="filter" aria-labelledby="f-stock">
-              <h3 class="filter__title" id="f-stock">Zaloga</h3>
-              <label class="toggle">
-                <input type="checkbox" data-f-stock="">
-                <span class="toggle__ui" aria-hidden="true"></span>
-                <span><strong>Samo izdelki na zalogi</strong></span>
-              </label>
-            </section>
-
-            <section class="filter" aria-labelledby="f-brand">
-              <h3 class="filter__title" id="f-brand">Znamka</h3>
-              <div class="fchips" data-f-brands="" role="group" aria-labelledby="f-brand"></div>
-            </section>
-          </div>
-
-          <div class="filters__foot">
-            <button class="btn btn--outline" type="button" data-filters-clear="">Počisti</button>
-            <button class="btn btn--primary" type="button" data-panel-close="" data-apply-count="">Prikaži izdelke</button>
-          </div>
-        </aside>
-      </div>
-
-      <div class="shop__main">
-        <div class="toolbar">
-          <button class="btn btn--outline toolbar__filters" type="button" data-filters-open="" aria-expanded="false" aria-controls="filters">
-            <svg class="icon"><use href="#i-filter"></use></svg>Filtri<span class="count-pill" data-filter-count="" hidden="">0</span>
-          </button>
-          <p class="toolbar__count" data-count="" aria-live="polite"></p>
-          <label class="sort">
-            <span class="sort__label">Razvrsti</span>
-            <select data-sort="">
-              <option value="default">Privzeto</option>
-              <option value="priljubljenost">Po priljubljenosti</option>
-              <option value="najnovejse">Najnovejše</option>
-              <option value="cena-narascajoce">Cena: od najnižje</option>
-              <option value="cena-padajoce">Cena: od najvišje</option>
-            </select>
-            <svg class="icon" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
-          </label>
-        </div>
-
-        <div class="active-filters" data-active="" hidden=""></div>
-
-        <ul class="shop-grid" data-grid=""></ul>
-
-        <div class="more" data-more="" hidden="">
-          <p class="more__text" data-more-text=""></p>
-          <div class="more__bar" data-more-bar=""><span></span></div>
-          <button class="btn btn--outline btn--lg" type="button" data-more-btn="">Naloži več izdelkov</button>
-        </div>
-
-        <div class="shop-empty" data-empty="" hidden="">
-          <span class="shop-empty__icon"><svg class="icon"><use href="#i-filter"></use></svg></span>
-          <p><strong>Ni izdelkov, ki ustrezajo izbranim filtrom.</strong></p>
-          <p>Poskusite z drugo velikostjo ali širšim cenovnim razponom.</p>
-          <button class="btn btn--primary" type="button" data-filters-clear="">Počisti filtre</button>
-        </div>
-
-        <noscript><p class="shop-empty">Za prikaz izdelkov omogočite JavaScript ali si oglejte <a href="opornice.html">opornice na medikem.si</a>.</p></noscript>
-      </div>
-    </div>
-  </div>
-
-  <section class="guide" data-guide="" hidden="" aria-labelledby="guide-title">
-    <div class="container">
-      <div class="section__head">
-        <h2 class="section__title" id="guide-title" data-guide-title="">Vodnik</h2>
-      </div>
-      <div class="guide__grid">
-        <nav class="guide__toc" aria-label="Vsebina">
-          <p class="guide__toc-title">Vsebina</p>
-          <ol data-guide-toc=""></ol>
-        </nav>
-        <article class="guide__article prose" data-guide-article=""></article>
-      </div>
-      <div class="faq" data-faq-wrap="" hidden="">
-        <h2 class="faq__title">Pogosta vprašanja</h2>
-        <div class="faq__list" data-faq=""></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ Service promises ============ -->
-  <section class="features" aria-label="Nakup pri Medikemu">
-    <div class="container">
-      <ul class="features__list">
-        <li>
-          <a class="feature" href="izdelki.html?s=&amp;post_type=product&amp;orderby=popularity">
-            <span class="feature__icon"><svg class="icon"><use href="#i-award"></use></svg></span>
-            <span><strong>Kvalitetni izdelki</strong><small>Preverjeni proizvajalci</small></span>
-          </a>
-        </li>
-        <li>
-          <a class="feature" href="nakup-in-dostava.html">
-            <span class="feature__icon"><svg class="icon"><use href="#i-truck"></use></svg></span>
-            <span><strong>Hitra dostava</strong><small>V 1–4 delovnih dneh, nad 50&nbsp;€ brezplačno</small></span>
-          </a>
-        </li>
-        <li>
-          <a class="feature" href="kontakt.html">
-            <span class="feature__icon"><svg class="icon"><use href="#i-headset"></use></svg></span>
-            <span><strong>Kontaktirajte nas</strong><small>02 82 18 210</small></span>
-          </a>
-        </li>
-        <li>
-          <a class="feature" href="reklamacije.html">
-            <span class="feature__icon"><svg class="icon"><use href="#i-return"></use></svg></span>
-            <span><strong>Hitra reklamacija</strong><small>Nov izdelek ali vračilo kupnine</small></span>
-          </a>
-        </li>
-        <li>
-          <a class="feature" href="nacin-placila.html">
-            <span class="feature__icon"><svg class="icon"><use href="#i-shield"></use></svg></span>
-            <span><strong>Varen nakup</strong><small>Kartice, povzetje ali predračun</small></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </section>
+<main id="main" class="main container" style="padding: 60px 20px; text-align: center; min-height: 50vh;">
+  <h1>Merilec krvnega tlaka</h1>
+  <p>Ta stran je v izdelavi.</p>
 </main>
+
 
 <!-- ============ Footer ============ -->
 <footer class="site-footer">

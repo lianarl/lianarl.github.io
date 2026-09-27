@@ -245,63 +245,8 @@
      ------------------------------------------------------------------ */
   let qa = null;
   function quickAdd(p, trigger) {
-    if (p.type === 'simple') {
-      M.cart.add({ id: p.id, key: p.id, name: p.name, price: p.price, img: p.gallery[0].sm, href: productUrl(p) });
-      if (trigger) M.flashAdded(trigger);
-      return;
-    }
-    if (!qa) {
-      qa = document.createElement('dialog');
-      qa.className = 'qa';
-      qa.setAttribute('aria-labelledby', 'qa-title');
-      document.body.append(qa);
-      qa.addEventListener('click', (e) => { if (e.target === qa) qa.close(); });
-      qa.addEventListener('close', () => { document.documentElement.classList.remove('is-locked'); });
-    }
-    qa.innerHTML = `
-      <div class="qa__inner">
-        <button class="icon-btn qa__close" type="button" aria-label="Zapri" data-qa-close><svg class="icon"><use href="#i-close"/></svg></button>
-        <div class="qa__media"><img src="${esc(p.gallery[0].src)}" alt="" width="1000" height="1000"></div>
-        <div class="qa__body">
-          ${p.brand ? `<p class="eyebrow">${esc(p.brand)}</p>` : ''}
-          <h2 class="qa__title" id="qa-title">${esc(p.name)}</h2>
-          <p class="qa__price" data-qa-price>${priceHTML(p, null)}</p>
-          <div class="qa__picker" data-qa-picker></div>
-          <p class="qa__stock" data-qa-stock></p>
-          <div class="buy">
-            ${qtyHTML('qa-qty')}
-            <button class="btn btn--primary btn--lg buy__btn" type="button" data-qa-add>
-              <svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg><span>Dodaj v košarico</span>
-            </button>
-          </div>
-          <a class="link-more" href="${productUrl(p)}">Vse podrobnosti izdelka<svg class="icon"><use href="#i-arrow-right"/></svg></a>
-        </div>
-      </div>`;
-    let state = { complete: false, variation: null };
-    const img = $('.qa__media img', qa);
-    const addBtn = $('[data-qa-add]', qa);
-    const picker = createPicker(p, $('[data-qa-picker]', qa), (s) => {
-      state = s;
-      $('[data-qa-price]', qa).innerHTML = priceHTML(p, s.variation);
-      $('[data-qa-stock]', qa).innerHTML = stockHTML(p, s);
-      addBtn.disabled = s.complete && !(s.variation && s.variation.inStock);
-      if (s.variation) img.src = p.gallery[s.variation.image].src;
-    });
-    $('[data-qa-close]', qa).addEventListener('click', () => qa.close());
-    addBtn.addEventListener('click', () => {
-      if (!state.complete) { picker.showMissing(); return; }
-      if (!state.variation || !state.variation.inStock) return;
-      M.cart.add({
-        id: p.id, key: picker.key(), name: p.name, variant: picker.label(),
-        price: state.variation.price, img: p.gallery[state.variation.image].sm, href: productUrl(p)
-      }, readQty(qa));
-      qa.close();
-      if (trigger) M.flashAdded(trigger);
-    });
-    document.documentElement.classList.add('is-locked');
-    qa.showModal();
-    const firstInput = $('input:not(:disabled)', qa);
-    if (firstInput) firstInput.focus();
+    M.cart.add({ id: p.id, key: p.id, name: p.name, price: p.price, img: p.gallery[0].sm, href: productUrl(p) });
+    if (trigger) M.flashAdded(trigger);
   }
 
   document.addEventListener('click', (e) => {
@@ -333,8 +278,36 @@
   function initListing() {
     const page = $('[data-listing]');
     if (!page) return;
-    const cat = D.categories[params.get('kategorija')] || D.categories[ROOT_CAT];
-    const parent = cat.parent ? D.categories[cat.parent] : null;
+    
+    const searchQ = params.get('s');
+    let cat, parent;
+    
+    if (searchQ) {
+      const qLower = searchQ.toLowerCase();
+      const matchedIds = D.products
+        .filter(p => p.name.toLowerCase().includes(qLower) || p.slug.toLowerCase().includes(qLower))
+        .map(p => p.id);
+        
+      cat = {
+        name: `Rezultati iskanja: "${searchQ}"`,
+        slug: 'search',
+        parent: null,
+        children: [],
+        intro: matchedIds.length === 0 ? '<p>Ni najdenih izdelkov za vaše iskanje.</p>' : '',
+        order: {
+          default: matchedIds,
+          popularity: matchedIds,
+          date: matchedIds
+        },
+        count: matchedIds.length,
+        image: '' // no image for search
+      };
+      parent = null;
+    } else {
+      cat = D.categories[params.get('kategorija')] || D.categories[ROOT_CAT];
+      parent = cat.parent ? D.categories[cat.parent] : null;
+    }
+    
     const items = catItems(cat);
     const grid = $('[data-grid]', page);
     const countEl = $('[data-count]', page);
@@ -346,7 +319,7 @@
 
     /* --- header --- */
     document.title = `${cat.name} – Medikem`;
-    $('[data-crumbs]', page).innerHTML = crumbsHTML([['Domov', './'], ...(parent ? [[parent.name, listingUrl(parent.slug)]] : []), [cat.name]]);
+    $('[data-crumbs]', page).innerHTML = crumbsHTML([['Domov', 'index.html'], ...(parent ? [[parent.name, listingUrl(parent.slug)]] : []), [cat.name]]);
     $('[data-cat-eyebrow]', page).textContent = parent ? parent.name : `${items.length} ${productsWord(items.length)}`;
     $('[data-cat-title]', page).textContent = cat.name;
     $('[data-cat-intro]', page).innerHTML = cat.intro;
@@ -355,12 +328,16 @@
       media.innerHTML = `<img src="${esc(cat.image)}" alt="" width="632" height="597" fetchpriority="high">`;
     } else {
       const top = popular(cat)[0];
-      media.classList.add('cat-hero__media--product');
-      media.innerHTML = `
-        <a class="cat-feature" href="${productUrl(top, cat.slug)}">
-          <img src="${esc(top.gallery[0].sm)}" alt="" width="520" height="520">
-          <span class="cat-feature__label"><span class="eyebrow">Najbolj priljubljeno</span><strong>${esc(top.name)}</strong></span>
-        </a>`;
+      if (top && top.gallery && top.gallery[0]) {
+        media.classList.add('cat-hero__media--product');
+        media.innerHTML = `
+          <a class="cat-feature" href="${productUrl(top, cat.slug)}">
+            <img src="${esc(top.gallery[0].sm)}" alt="" width="520" height="520">
+            <span class="cat-feature__label"><span class="eyebrow">Najbolj priljubljeno</span><strong>${esc(top.name)}</strong></span>
+          </a>`;
+      } else {
+        media.innerHTML = '';
+      }
     }
 
     // subcategory shortcuts: children on the parent page, siblings on a subcategory
@@ -374,7 +351,9 @@
       shortcuts.forEach((slug) => {
         const c = D.categories[slug];
         if (!c) return;
-        const img = popular(c)[0].gallery[0].sm;
+        const pop = popular(c);
+        if (!pop.length || !pop[0].gallery || !pop[0].gallery[0]) return;
+        const img = pop[0].gallery[0].sm;
         const current = c.slug === cat.slug;
         tiles.push(`<li><a class="subcat${current ? ' is-current' : ''}" href="${listingUrl(c.slug)}"${current ? ' aria-current="page"' : ''}>
           <span class="subcat__img"><img src="${esc(img)}" alt="" width="520" height="520" loading="lazy"></span>
@@ -453,7 +432,7 @@
 
     /* --- filter UI --- */
     $('[data-cat-tree]').innerHTML = D.categoryTree.map((c) => {
-      const href = (slug) => (D.categories[slug] ? listingUrl(slug) : `https://www.medikem.si/${slug}/`);
+      const href = (slug) => (D.categories[slug] ? listingUrl(slug) : `izdelki.html?kategorija=${slug}`);
       const cur = (slug) => (slug === cat.slug ? ' aria-current="page"' : '');
       const kids = c.children
         ? `<ul>${c.children.map((k) => `<li><a href="${href(k.slug)}"${cur(k.slug)}>${esc(k.name)}<span>${k.count}</span></a></li>`).join('')}</ul>`
@@ -712,7 +691,7 @@
     if (!p) {
       ['[data-product-main]', '[data-tabs]', '.related', '[data-buybar]'].forEach((sel) => { const el = $(sel, page); if (el) el.hidden = true; });
       $('[data-product-missing]', page).hidden = false;
-      $('[data-crumbs]', page).innerHTML = crumbsHTML([['Domov', './'], ['Opornice', listingUrl(ROOT_CAT)], ['Izdelek ni najden']]);
+      $('[data-crumbs]', page).innerHTML = crumbsHTML([['Domov', 'index.html'], ['Opornice', listingUrl(ROOT_CAT)], ['Izdelek ni najden']]);
       document.title = 'Izdelek ni najden – Medikem';
       return;
     }
@@ -720,7 +699,7 @@
     const parent = cat.parent ? D.categories[cat.parent] : null;
     document.title = `${p.name} – Medikem`;
     $('[data-crumbs]', page).innerHTML = crumbsHTML([
-      ['Domov', './'], ...(parent ? [[parent.name, listingUrl(parent.slug)]] : []), [cat.name, listingUrl(cat.slug)], [p.name]
+      ['Domov', 'index.html'], ...(parent ? [[parent.name, listingUrl(parent.slug)]] : []), [cat.name, listingUrl(cat.slug)], [p.name]
     ]);
     $$('[data-cat-link]', page).forEach((a) => {
       a.href = listingUrl(cat.slug);
@@ -736,7 +715,7 @@
     let current = 0;
     const show = (i) => {
       current = (i + p.gallery.length) % p.gallery.length;
-      mainImg.src = p.gallery[current].src;
+      mainImg.src = p.gallery[current].md || p.gallery[current].sm;
       mainImg.alt = current === 0 ? p.name : `${p.name} – slika ${current + 1}`;
       $$('button', thumbs).forEach((b, k) => b.setAttribute('aria-current', String(k === current)));
       counter.textContent = `${current + 1} / ${p.gallery.length}`;
@@ -766,7 +745,7 @@
 
     const lb = $('[data-lightbox]');
     const lbImg = $('img', lb);
-    const lbShow = () => { lbImg.src = p.gallery[current].src; lbImg.alt = mainImg.alt; };
+    const lbShow = () => { lbImg.src = p.gallery[current].md || p.gallery[current].sm; lbImg.alt = mainImg.alt; };
     $('[data-zoom]', page).addEventListener('click', () => { lbShow(); document.documentElement.classList.add('is-locked'); lb.showModal(); });
     lb.addEventListener('close', () => document.documentElement.classList.remove('is-locked'));
     lb.addEventListener('click', (e) => { if (e.target === lb || e.target.closest('[data-lb-close]')) lb.close(); });
@@ -784,11 +763,11 @@
     const brandEl = $('[data-p-brand]', page);
     brandEl.textContent = p.brand;
     brandEl.hidden = !p.brand;
-    if (p.brand) brandEl.href = `https://www.medikem.si/proizvajalec/${M.fold(p.brand).replace(/\s+/g, '-')}/`;
+    if (p.brand) brandEl.href = `izdelki.html?kategorija=${M.fold(p.brand).replace(/\s+/g, '-')}`;
     $('[data-p-name]', page).textContent = p.name;
     $('[data-p-rating]', page).innerHTML = ratingHTML(p, { withLink: true });
     const shortEl = $('[data-p-short]', page);
-    shortEl.textContent = p.short || p.info;
+    shortEl.innerHTML = p.short || p.info;
     if (shortEl.textContent.length > 280) {
       shortEl.classList.add('is-clamped');
       shortEl.insertAdjacentHTML('afterend', '<a class="pdp__more" href="#tab-desc" data-open-desc>Preberite celoten opis</a>');
@@ -818,8 +797,8 @@
       $$('[data-p-add], [data-bar-add]').forEach((b) => { b.disabled = blocked; });
     };
 
-    if (p.onRequest) {
-      // sold on request only: replace the buy row with an inquiry button
+    if (!buyable(p)) {
+      // sold on request or out of stock: replace the buy row with an inquiry button
       pickerRoot.hidden = true;
       $('.buy', page).innerHTML = `
         <a class="btn btn--primary btn--lg buy__btn" href="${inquiryHref(p)}"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Pošlji povpraševanje</span></a>
@@ -980,6 +959,33 @@
     render();
   }
 
+  function initWishlist() {
+    const page = $('#seznam-zelja-page');
+    if (!page) return;
+    
+    document.title = 'Seznam želja – Medikem';
+    const grid = $('[data-wishlist-grid]', page);
+    const emptyMsg = $('[data-wishlist-empty]', page);
+    
+    const render = () => {
+      const items = M.wish.items().map(id => byId.get(id)).filter(Boolean);
+      if (items.length === 0) {
+        grid.innerHTML = '';
+        grid.hidden = true;
+        emptyMsg.hidden = false;
+      } else {
+        grid.innerHTML = items.map(p => `<div class="shop-grid__item">${cardHTML(p, ROOT_CAT)}</div>`).join('');
+        grid.hidden = false;
+        emptyMsg.hidden = true;
+        M.wish.sync(grid);
+      }
+    };
+    
+    render();
+    window.addEventListener('mk-wish-changed', render);
+  }
+
   initListing();
   initProduct();
+  initWishlist();
 })();

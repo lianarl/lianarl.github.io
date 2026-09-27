@@ -1,0 +1,10 @@
+
+.page-content { padding: 40px 20px; }
+.page-title { font-size: 2rem; margin-bottom: 30px; text-align: center; }
+.page-body { max-width: 800px; margin: 0 auto; line-height: 1.6; }
+.page-body h2 { font-size: 1.5rem; margin: 30px 0 15px; }
+.page-body h3 { font-size: 1.25rem; margin: 20px 0 10px; }
+.page-body p { margin-bottom: 15px; }
+.page-body ul, .page-body ol { margin: 0 0 15px 20px; }
+.page-body li { margin-bottom: 5px; }
+.page-body img { max-width: 100%; height: auto; display: block; margin: 20px auto; border-radius: 8px; }

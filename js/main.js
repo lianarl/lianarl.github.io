@@ -661,6 +661,7 @@
         on ? wish.add(id) : wish.delete(id);
         storage.set('mk-wish', [...wish]);
         syncWish();
+        window.dispatchEvent(new Event('mk-wish-changed'));
         heart.classList.remove('is-popping');
         void heart.offsetWidth;
         if (on) heart.classList.add('is-popping');
@@ -684,7 +685,7 @@
     window.Medikem = {
       eur, fold, priceRange, storage, createPanel, reducedMotion,
       cart: { add, open: () => mini && mini.open(cartLink) },
-      wish: { has: (id) => wish.has(String(id)), sync: syncWish },
+      wish: { has: (id) => wish.has(String(id)), sync: syncWish, items: () => Array.from(wish) },
       flashAdded
     };
 
