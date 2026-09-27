@@ -322,7 +322,15 @@
     $('[data-crumbs]', page).innerHTML = crumbsHTML([['Domov', 'index.html'], ...(parent ? [[parent.name, listingUrl(parent.slug)]] : []), [cat.name]]);
     $('[data-cat-eyebrow]', page).textContent = parent ? parent.name : `${items.length} ${productsWord(items.length)}`;
     $('[data-cat-title]', page).textContent = cat.name;
-    $('[data-cat-intro]', page).innerHTML = cat.intro;
+    const introEl = $('[data-cat-intro]', page);
+    if (introEl) {
+      if (cat.intro) {
+        introEl.innerHTML = cat.intro;
+        introEl.hidden = false;
+      } else {
+        introEl.hidden = true;
+      }
+    }
     const media = $('[data-cat-media]', page);
     if (cat.image) {
       media.innerHTML = `<img src="${esc(cat.image)}" alt="" width="632" height="597" fetchpriority="high">`;
