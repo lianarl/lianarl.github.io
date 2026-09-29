@@ -6,6 +6,7 @@
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const eur = new Intl.NumberFormat('sl-SI', { style: 'currency', currency: 'EUR' });
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   const storage = {
     get(key, fallback) {
@@ -231,8 +232,8 @@
   }
 
   /* ------------------------------------------------------------------
-     Search suggestions (categories from the menu + products on the page).
-     Submitting the form still searches the live medikem.si shop.
+     Search suggestions (categories from the menu + the product catalogue).
+     Submitting the form opens the full results on izdelki.html?s=…
      ------------------------------------------------------------------ */
   function initSearch() {
     const form = $('[data-search]');
@@ -246,19 +247,20 @@
       .filter((c) => c.name && !/^poglej vse|^vsi izdelki/i.test(c.name) && !seen.has(c.href) && seen.add(c.href))
       .map((c) => ({ ...c, key: fold(c.name) }));
 
-    const seenNames = new Set();
+    // Home page cards are the same products as the catalogue, so dedupe by link
+    const seenLinks = new Set();
     const products = [
       ...((window.MEDIKEM_DATA && window.MEDIKEM_DATA.products) || []).map((p) => ({
-        name: p.name, href: `izdelek.html?id=${p.slug}`, img: p.gallery[0] && p.gallery[0].sm, price: priceRange(p)
+        name: p.name, href: `izdelek.html?id=${encodeURIComponent(p.slug)}`, img: p.gallery[0] && p.gallery[0].sm, price: priceRange(p)
       })),
       ...$$('.product-card[data-name]').map((card) => ({
         name: card.dataset.name,
-        href: $('.product-card__title a', card).href,
+        href: $('.product-card__title a', card).getAttribute('href'),
         img: $('img', card).getAttribute('src'),
         price: $('.product-card__price', card).textContent.trim()
       }))
     ]
-      .filter((p) => !seenNames.has(p.name) && seenNames.add(p.name))
+      .filter((p) => !seenLinks.has(p.href) && seenLinks.add(p.href))
       .map((p) => ({ ...p, key: fold(p.name) }));
 
     let options = [];
@@ -522,58 +524,63 @@
     const mini = miniRoot ? createPanel(miniRoot) : null;
     let toastT;
 
-    const totals = () => Object.values(cart).reduce((t, i) => ({ qty: t.qty + i.qty, sum: t.sum + i.qty * i.price }), { qty: 0, sum: 0 });
+    const totals = () => {
+      const t = Object.values(cart).reduce((a, i) => ({ qty: a.qty + i.qty, sum: a.sum + i.qty * i.price }), { qty: 0, sum: 0 });
+      const missing = Math.max(0, FREE_SHIPPING_FROM - t.sum);
+      const shipping = t.qty && missing > 0 ? SHIPPING_SI : 0;
+      return { ...t, missing, shipping, total: t.sum + shipping };
+    };
+
+    // One cart line with quantity buttons; used by the mini cart and the cart page
+    const itemRow = (key, it) => {
+      const li = document.createElement('li');
+      li.className = 'minicart__item';
+      li.innerHTML = `
+        <a class="minicart__img" tabindex="-1" aria-hidden="true"><img alt="" width="72" height="72"></a>
+        <div class="minicart__body">
+          <a class="minicart__name"></a>
+          <p class="minicart__variant"></p>
+          <div class="minicart__row">
+            <div class="qty qty--sm">
+              <button type="button" data-qty="-1" aria-label="Zmanjšaj količino"><svg class="icon"><use href="#i-minus"/></svg></button>
+              <span aria-live="polite"></span>
+              <button type="button" data-qty="1" aria-label="Povečaj količino"><svg class="icon"><use href="#i-plus"/></svg></button>
+            </div>
+            <strong class="minicart__price"></strong>
+          </div>
+        </div>
+        <button class="minicart__remove" type="button" aria-label="Odstrani iz košarice"><svg class="icon"><use href="#i-close"/></svg></button>`;
+      $$('a', li).forEach((a) => { a.href = it.href || '#'; });
+      if (it.img) $('img', li).src = it.img;
+      $('.minicart__name', li).textContent = it.name;
+      const variant = $('.minicart__variant', li);
+      variant.textContent = it.variant || '';
+      variant.hidden = !it.variant;
+      $('.qty span', li).textContent = it.qty;
+      $('.minicart__price', li).textContent = eur.format(it.price * it.qty);
+      $$('[data-qty]', li).forEach((b) => b.addEventListener('click', () => setQty(key, it.qty + Number(b.dataset.qty))));
+      $('.minicart__remove', li).addEventListener('click', () => setQty(key, 0));
+      return li;
+    };
+    const shipText = (missing) => (missing > 0
+      ? `Še <strong>${eur.format(missing)}</strong> do brezplačne dostave`
+      : '<strong>Dostava po Sloveniji je brezplačna</strong>');
 
     const renderMini = () => {
       if (!miniRoot) return;
-      const { qty, sum } = totals();
+      const { qty, sum, missing, shipping, total } = totals();
       const entries = Object.entries(cart);
-      const list = $('[data-minicart-items]', miniRoot);
       $('[data-minicart-count]', miniRoot).textContent = qty;
       $('[data-minicart-empty]', miniRoot).hidden = entries.length > 0;
       $('[data-minicart-foot]', miniRoot).hidden = entries.length === 0;
       $('[data-minicart-ship]', miniRoot).hidden = entries.length === 0;
+      $('[data-minicart-items]', miniRoot).replaceChildren(...entries.map(([key, it]) => itemRow(key, it)));
 
-      list.replaceChildren(...entries.map(([key, it]) => {
-        const li = document.createElement('li');
-        li.className = 'minicart__item';
-        li.innerHTML = `
-          <a class="minicart__img" tabindex="-1" aria-hidden="true"><img alt="" width="72" height="72"></a>
-          <div class="minicart__body">
-            <a class="minicart__name"></a>
-            <p class="minicart__variant"></p>
-            <div class="minicart__row">
-              <div class="qty qty--sm">
-                <button type="button" data-qty="-1" aria-label="Zmanjšaj količino"><svg class="icon"><use href="#i-minus"/></svg></button>
-                <span aria-live="polite"></span>
-                <button type="button" data-qty="1" aria-label="Povečaj količino"><svg class="icon"><use href="#i-plus"/></svg></button>
-              </div>
-              <strong class="minicart__price"></strong>
-            </div>
-          </div>
-          <button class="minicart__remove" type="button" aria-label="Odstrani iz košarice"><svg class="icon"><use href="#i-close"/></svg></button>`;
-        $$('a', li).forEach((a) => { a.href = it.href || '#'; });
-        if (it.img) $('img', li).src = it.img;
-        $('.minicart__name', li).textContent = it.name;
-        const variant = $('.minicart__variant', li);
-        variant.textContent = it.variant || '';
-        variant.hidden = !it.variant;
-        $('.qty span', li).textContent = it.qty;
-        $('.minicart__price', li).textContent = eur.format(it.price * it.qty);
-        $$('[data-qty]', li).forEach((b) => b.addEventListener('click', () => setQty(key, it.qty + Number(b.dataset.qty))));
-        $('.minicart__remove', li).addEventListener('click', () => setQty(key, 0));
-        return li;
-      }));
-
-      const missing = Math.max(0, FREE_SHIPPING_FROM - sum);
-      $('[data-ship-text]', miniRoot).innerHTML = missing > 0
-        ? `Še <strong>${eur.format(missing)}</strong> do brezplačne dostave`
-        : '<strong>Dostava po Sloveniji je brezplačna</strong>';
+      $('[data-ship-text]', miniRoot).innerHTML = shipText(missing);
       $('[data-ship-bar]', miniRoot).style.setProperty('--p', Math.min(1, sum / FREE_SHIPPING_FROM));
-      const shipping = missing > 0 ? SHIPPING_SI : 0;
       $('[data-minicart-subtotal]', miniRoot).textContent = eur.format(sum);
       $('[data-minicart-shipping]', miniRoot).textContent = shipping ? eur.format(shipping) : 'Brezplačno';
-      $('[data-minicart-total]', miniRoot).textContent = eur.format(sum + shipping);
+      $('[data-minicart-total]', miniRoot).textContent = eur.format(total);
     };
 
     const render = () => {
@@ -581,6 +588,7 @@
       countEl.textContent = qty;
       totalEl.textContent = eur.format(sum);
       renderMini();
+      window.dispatchEvent(new Event('mk-cart-changed'));
     };
 
     function setQty(key, q) {
@@ -676,15 +684,31 @@
     });
 
     window.addEventListener('storage', (e) => {
+      if (e.key === 'mk-wish') {
+        wish.clear();
+        storage.get('mk-wish', []).forEach((id) => wish.add(String(id)));
+        syncWish();
+        window.dispatchEvent(new Event('mk-wish-changed'));
+      }
       if (e.key !== 'mk-cart') return;
       Object.keys(cart).forEach((k) => delete cart[k]);
       Object.assign(cart, storage.get('mk-cart', {}));
       render();
     });
 
+    const clear = () => {
+      Object.keys(cart).forEach((k) => delete cart[k]);
+      storage.set('mk-cart', cart);
+      render();
+    };
+
     window.Medikem = {
       eur, fold, priceRange, storage, createPanel, reducedMotion,
-      cart: { add, open: () => mini && mini.open(cartLink) },
+      cart: {
+        add, clear, totals, itemRow, shipText,
+        entries: () => Object.entries(cart),
+        open: () => mini && mini.open(cartLink)
+      },
       wish: { has: (id) => wish.has(String(id)), sync: syncWish, items: () => Array.from(wish) },
       flashAdded
     };
@@ -840,6 +864,93 @@
     }
   }
 
+  /* ------------------------------------------------------------------
+     Cart page (kosarica.html) and checkout (blagajna.html)
+     ------------------------------------------------------------------ */
+  function sumHTML({ sum, shipping, total }) {
+    return `
+      <dl class="minicart__sum">
+        <div><dt>Vmesni seštevek</dt><dd>${eur.format(sum)}</dd></div>
+        <div><dt>Dostava po Sloveniji</dt><dd>${shipping ? eur.format(shipping) : 'Brezplačno'}</dd></div>
+        <div class="is-total"><dt>Skupaj</dt><dd>${eur.format(total)}</dd></div>
+      </dl>`;
+  }
+  const emptyCartHTML = `
+    <div class="cart-page__empty">
+      <p><strong>Vaša košarica je prazna.</strong></p>
+      <a class="btn btn--primary" href="izdelki.html?kategorija=opornice">Oglejte si opornice</a>
+    </div>`;
+
+  function initCartPage() {
+    const root = $('[data-cart-page]');
+    if (!root || !window.Medikem) return;
+    const { cart } = window.Medikem;
+    const render = () => {
+      const entries = cart.entries();
+      if (!entries.length) { root.innerHTML = emptyCartHTML; return; }
+      const t = cart.totals();
+      root.innerHTML = `
+        <div class="cart-page">
+          <ul class="minicart__items cart-page__items"></ul>
+          <aside class="cart-page__sum" aria-label="Povzetek naročila">
+            <p class="cart-page__ship">${cart.shipText(t.missing)}</p>
+            ${sumHTML(t)}
+            <a class="btn btn--primary btn--block btn--lg" href="blagajna.html">Na blagajno</a>
+            <a class="btn btn--outline btn--block" href="izdelki.html?s=">Nadaljuj z nakupovanjem</a>
+          </aside>
+        </div>`;
+      $('.cart-page__items', root).replaceChildren(...entries.map(([key, it]) => cart.itemRow(key, it)));
+    };
+    render();
+    window.addEventListener('mk-cart-changed', render);
+  }
+
+  function initCheckout() {
+    const form = $('[data-checkout]');
+    if (!form || !window.Medikem) return;
+    const { cart } = window.Medikem;
+    const summary = $('[data-checkout-summary]');
+    const msg = $('[data-checkout-msg]', form);
+    let done = false;
+
+    const render = () => {
+      if (done) return;
+      const entries = cart.entries();
+      form.hidden = !entries.length;
+      if (!entries.length) { summary.innerHTML = emptyCartHTML; return; }
+      const lines = entries.map(([, it]) => `
+        <li><span>${it.qty} × ${esc(it.name)}${it.variant ? ` <small>${esc(it.variant)}</small>` : ''}</span><strong>${eur.format(it.qty * it.price)}</strong></li>`).join('');
+      summary.innerHTML = `<h2 class="checkout__title">Vaše naročilo</h2><ul class="checkout__lines">${lines}</ul>${sumHTML(cart.totals())}`;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      msg.className = 'checkout__msg';
+      const invalid = $$('input, select, textarea', form).find((el) => !el.checkValidity());
+      if (invalid) {
+        msg.textContent = invalid.type === 'email' && invalid.value ? 'Vpišite veljaven e-poštni naslov.'
+          : invalid.type === 'checkbox' ? 'Za oddajo naročila se morate strinjati s splošnimi pogoji.'
+            : 'Izpolnite vsa obvezna polja.';
+        msg.classList.add('is-error');
+        invalid.focus();
+        return;
+      }
+      if (!cart.entries().length) return;
+      done = true;
+      cart.clear();
+      form.hidden = true;
+      summary.innerHTML = `
+        <div class="cart-page__empty" role="status">
+          <p><strong>Hvala za vaše naročilo!</strong></p>
+          <p>Potrditev boste prejeli na ${esc(form.elements.email.value)}.</p>
+          <a class="btn btn--primary" href="index.html">Nazaj na domačo stran</a>
+        </div>`;
+      summary.focus();
+    });
+    render();
+    window.addEventListener('mk-cart-changed', render);
+  }
+
   function initYear() {
     const y = $('[data-year]');
     if (y) y.textContent = new Date().getFullYear();
@@ -852,6 +963,8 @@
   initSlider();
   initFilters();
   initCommerce();
+  initCartPage();
+  initCheckout();
   initMarquee();
   initStoreHours();
   initNewsletter();

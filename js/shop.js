@@ -15,6 +15,7 @@
 
   const ROOT_CAT = 'opornice';
   const SIDE_KEY = 'pa_leva-desna';
+  const SIZE_KEYS = ['pa_velikost', 'pa_stevilka-noge'];
   const LABEL_ORDER = ['XXS', 'XS', 'S', 'S/M', 'M', 'L', 'L/XL', 'XL', 'XXL', 'XXXL', 'XXXXL', 'Leva', 'Desna'];
   const PAGE_SIZE = 24;
 
@@ -29,6 +30,7 @@
   const inquiryHref = (p) => `mailto:ravne@medikem.si?subject=${encodeURIComponent(`Povpraševanje: ${p.name}`)}`;
   const buyable = (p) => !p.onRequest && p.inStock;
   const labelRank = (label) => { const i = LABEL_ORDER.indexOf(label); return i < 0 ? 99 : i; };
+  const byLabel = (a, b) => labelRank(a) - labelRank(b) || a.localeCompare(b, 'sl', { numeric: true });
 
   // Slovenian has four plural forms: 1 izdelek, 2 izdelka, 3–4 izdelki, 5+ izdelkov.
   const plural = (n, one, two, few, many) => {
@@ -100,13 +102,15 @@
       !p.onRequest && !p.inStock ? '<span class="badge">Ni na zalogi</span>' : '',
       off ? `<span class="badge badge--sale">−${off} %</span>` : ''
     ].join('');
-    const action = buyable(p)
-      ? `<button class="btn btn--primary btn--block shop-card__btn" type="button" data-quick-add="${esc(p.slug)}">
-           <svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg><span>Dodaj v košarico</span>
-         </button>`
-      : `<a class="btn btn--outline btn--block shop-card__btn" href="${inquiryHref(p)}">
+    const action = !buyable(p)
+      ? `<a class="btn btn--outline btn--block shop-card__btn" href="${inquiryHref(p)}">
            <svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg><span>Pošlji povpraševanje</span>
-         </a>`;
+         </a>`
+      : p.type === 'variable'
+        ? `<a class="btn btn--outline btn--block shop-card__btn" href="${url}"><span>Izberite možnosti</span></a>`
+        : `<button class="btn btn--primary btn--block shop-card__btn" type="button" data-quick-add="${esc(p.slug)}">
+           <svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg><span>Dodaj v košarico</span>
+         </button>`;
     return `
       <article class="shop-card${!p.onRequest && !p.inStock ? ' is-oos' : ''}" data-id="${esc(p.id)}">
         <a class="shop-card__media" href="${url}" tabindex="-1" aria-hidden="true">
@@ -139,7 +143,7 @@
       <fieldset class="opt" data-attr="${esc(a.key)}">
         <legend class="opt__legend">${esc(a.label)}: <span class="opt__chosen" data-chosen>Izberite</span></legend>
         <div class="opt__list">
-          ${a.options.map((o) => `
+          ${[...a.options].sort((x, y) => byLabel(x.label, y.label)).map((o) => `
             <label class="opt__item">
               <input type="radio" name="${uid}-${esc(a.key)}" value="${esc(o.value)}">
               <span>${esc(o.label)}</span>
@@ -241,9 +245,9 @@
   };
 
   /* ------------------------------------------------------------------
-     Quick add dialog (used from cards on listing and product pages)
+     Quick add from cards – simple products only; variable ones link to
+     the product page because a size/side has to be chosen first
      ------------------------------------------------------------------ */
-  let qa = null;
   function quickAdd(p, trigger) {
     M.cart.add({ id: p.id, key: p.id, name: p.name, price: p.price, img: p.gallery[0].sm, href: productUrl(p) });
     if (trigger) M.flashAdded(trigger);
@@ -253,7 +257,7 @@
     const btn = e.target.closest('[data-quick-add]');
     if (!btn) return;
     const p = bySlug.get(btn.dataset.quickAdd);
-    if (p) quickAdd(p, btn);
+    if (p && p.type === 'simple' && buyable(p)) quickAdd(p, btn);
   });
 
   /* ------------------------------------------------------------------
@@ -264,8 +268,9 @@
   const primaryCat = (p) => {
     const hinted = D.categories[params.get('kat')];
     if (hinted && hinted.order.default.includes(p.id)) return hinted;
-    const child = p.categories.map((c) => D.categories[c]).find((c) => c && c.slug !== ROOT_CAT);
-    return child || D.categories[ROOT_CAT];
+    // most specific category first (a subcategory rather than its parent)
+    const known = p.categories.map((c) => D.categories[c]).filter(Boolean);
+    return known.find((c) => c.parent) || known[0] || D.categories[ROOT_CAT];
   };
   const shortName = (name) => { const s = name.replace(/^Opornica za /, ''); return s.charAt(0).toUpperCase() + s.slice(1); };
   const crumbsHTML = (trail) => trail.map(([label, href]) => (href
@@ -279,35 +284,40 @@
     const page = $('[data-listing]');
     if (!page) return;
     
-    const searchQ = params.get('s');
+    // ?s= searches the whole catalogue (empty = all products); an unknown ?kategorija=
+    // (e.g. a brand slug from an old link) is searched for instead of showing Opornice.
+    const catParam = params.get('kategorija');
+    const searchQ = params.has('s') ? params.get('s').trim()
+      : catParam && !D.categories[catParam] ? catParam.replace(/-/g, ' ') : null;
+    const isSearch = searchQ !== null;
     let cat, parent;
-    
-    if (searchQ) {
-      const qLower = searchQ.toLowerCase();
-      const matchedIds = D.products
-        .filter(p => p.name.toLowerCase().includes(qLower) || p.slug.toLowerCase().includes(qLower))
-        .map(p => p.id);
-        
+
+    if (isSearch) {
+      const terms = M.fold(searchQ).split(/\s+/).filter(Boolean);
+      const haystack = (p) => M.fold(`${p.name} ${p.brand} ${p.sku} ${p.slug.replace(/-/g, ' ')}`);
+      const matched = new Set(D.products.filter((p) => terms.every((t) => haystack(p).includes(t))).map((p) => p.id));
+      const all = D.order || { default: D.products.map((p) => p.id) };
+      const inOrder = (ids) => (ids || all.default).filter((id) => matched.has(id));
+
       cat = {
-        name: `Rezultati iskanja: "${searchQ}"`,
+        name: searchQ ? `Rezultati iskanja: »${searchQ}«` : 'Vsi izdelki',
         slug: 'search',
         parent: null,
         children: [],
-        intro: matchedIds.length === 0 ? '<p>Ni najdenih izdelkov za vaše iskanje.</p>' : '',
-        order: {
-          default: matchedIds,
-          popularity: matchedIds,
-          date: matchedIds
-        },
-        count: matchedIds.length,
-        image: '' // no image for search
+        intro: matched.size === 0 ? '<p>Ni najdenih izdelkov za vaše iskanje.</p>' : '',
+        order: { default: inOrder(all.default), popularity: inOrder(all.popularity), date: inOrder(all.date) },
+        count: matched.size,
+        image: ''
       };
       parent = null;
+      const input = $('#search-input');
+      if (input && searchQ) input.value = searchQ;
     } else {
-      cat = D.categories[params.get('kategorija')] || D.categories[ROOT_CAT];
+      cat = D.categories[catParam] || D.categories[ROOT_CAT];
       parent = cat.parent ? D.categories[cat.parent] : null;
     }
-    
+    const catHint = isSearch ? null : cat.slug;
+
     const items = catItems(cat);
     const grid = $('[data-grid]', page);
     const countEl = $('[data-count]', page);
@@ -339,7 +349,7 @@
       if (top && top.gallery && top.gallery[0]) {
         media.classList.add('cat-hero__media--product');
         media.innerHTML = `
-          <a class="cat-feature" href="${productUrl(top, cat.slug)}">
+          <a class="cat-feature" href="${productUrl(top, catHint)}">
             <img src="${esc(top.gallery[0].sm)}" alt="" width="520" height="520">
             <span class="cat-feature__label"><span class="eyebrow">Najbolj priljubljeno</span><strong>${esc(top.name)}</strong></span>
           </a>`;
@@ -377,9 +387,10 @@
     }
 
     /* --- facets --- */
+    // Math.min() of an empty list is Infinity, so guard lists with no priced products
     const priced = items.filter((p) => !p.onRequest);
-    const lo = Math.floor(Math.min(...priced.map((p) => p.price)));
-    const hi = Math.ceil(Math.max(...priced.map((p) => p.priceMax)));
+    const lo = priced.length ? Math.floor(Math.min(...priced.map((p) => p.price))) : 0;
+    const hi = priced.length ? Math.ceil(Math.max(...priced.map((p) => p.priceMax))) : 0;
 
     const facetMap = new Map();
     items.forEach((p) => p.attributes.forEach((a) => {
@@ -391,7 +402,7 @@
     const facets = [...facetMap.values()]
       .filter((f) => f.options.size > 1)
       .sort((a, b) => (a.key === SIDE_KEY) - (b.key === SIDE_KEY) || b.products - a.products)
-      .map((f) => ({ ...f, options: [...f.options].sort(([, a], [, b]) => labelRank(a) - labelRank(b) || a.localeCompare(b, 'sl', { numeric: true })) }));
+      .map((f) => ({ ...f, options: [...f.options].sort(([, a], [, b]) => byLabel(a, b)) }));
 
     const brandCounts = new Map();
     items.forEach((p) => { if (p.brand) brandCounts.set(p.brand, (brandCounts.get(p.brand) || 0) + 1); });
@@ -402,7 +413,7 @@
     const state = {
       attrs: Object.fromEntries(facets.map((f) => [f.key, splitParam(paramOf(f.key))])),
       brands: splitParam('znamka'),
-      min: Number.isFinite(pMin) && pMin >= lo ? pMin : lo,
+      min: Number.isFinite(pMin) && pMin >= lo && pMin < hi ? pMin : lo,
       max: Number.isFinite(pMax) && pMax > 0 && pMax <= hi ? pMax : hi,
       stock: params.get('zaloga') === '1',
       sort: params.get('razvrsti') || 'default',
@@ -463,6 +474,7 @@
     const maxR = $('[data-f-max]');
     [minR, maxR].forEach((r) => { r.min = lo; r.max = hi; r.step = 1; });
     const range = $('[data-f-range]');
+    range.closest('.filter').hidden = hi - lo < 2;
     const stockEl = $('[data-f-stock]');
     sortEl.value = state.sort;
 
@@ -484,7 +496,8 @@
 
     const writeUrl = () => {
       const q = new URLSearchParams();
-      q.set('kategorija', cat.slug);
+      if (isSearch) q.set('s', searchQ);
+      else q.set('kategorija', cat.slug);
       facets.forEach((f) => { if (state.attrs[f.key].size) q.set(paramOf(f.key), [...state.attrs[f.key]].join(',')); });
       if (state.brands.size) q.set('znamka', [...state.brands].join(','));
       if (priceActive(state)) q.set('cena', `${state.min}-${state.max}`);
@@ -545,7 +558,7 @@
     let first = true;
     let list = [];
     function renderGrid(from) {
-      const html = list.slice(from, state.limit).map((p) => `<li class="shop-grid__item">${cardHTML(p, cat.slug)}</li>`).join('');
+      const html = list.slice(from, state.limit).map((p) => `<li class="shop-grid__item">${cardHTML(p, catHint)}</li>`).join('');
       if (from === 0) grid.innerHTML = html;
       else grid.insertAdjacentHTML('beforeend', html);
       const fresh = $$('.shop-grid__item', grid).slice(from);
@@ -583,7 +596,8 @@
       state.limit += PAGE_SIZE;
       renderGrid(from);
       const next = $$('.shop-grid__item', grid)[from];
-      if (next) $('a', next).focus({ preventScroll: true });
+      // the image link is aria-hidden and untabbable, so focus the product name
+      if (next) $('.shop-card__name a', next).focus({ preventScroll: true });
     });
 
     filtersRoot.addEventListener('change', (e) => {
@@ -771,7 +785,7 @@
     const brandEl = $('[data-p-brand]', page);
     brandEl.textContent = p.brand;
     brandEl.hidden = !p.brand;
-    if (p.brand) brandEl.href = `izdelki.html?kategorija=${M.fold(p.brand).replace(/\s+/g, '-')}`;
+    if (p.brand) brandEl.href = `izdelki.html?s=${encodeURIComponent(p.brand.toLowerCase())}`;
     $('[data-p-name]', page).textContent = p.name;
     $('[data-p-rating]', page).innerHTML = ratingHTML(p, { withLink: true });
     const shortEl = $('[data-p-short]', page);
@@ -795,7 +809,7 @@
     let picker = null;
     const pickerRoot = $('[data-p-picker]', page);
     const sizeHelp = $('[data-size-help]', page);
-    sizeHelp.hidden = !p.attributes.some((a) => a.key !== SIDE_KEY);
+    sizeHelp.hidden = !p.attributes.some((a) => SIZE_KEYS.includes(a.key));
 
     const refresh = () => {
       priceEl.innerHTML = priceHTML(p, state.variation);
@@ -826,7 +840,7 @@
         }
         refresh();
       });
-      const fs = $(`[data-attr]:not([data-attr="${SIDE_KEY}"])`, pickerRoot);
+      const fs = $(SIZE_KEYS.map((k) => `[data-attr="${k}"]`).join(','), pickerRoot);
       if (fs) { fs.classList.add('has-help'); fs.append(sizeHelp); }
     } else {
       pickerRoot.hidden = true;
@@ -851,7 +865,7 @@
       }
       M.flashAdded($('[data-p-add]', page));
     };
-    if (!p.onRequest) {
+    if (buyable(p)) {
       addBtn.addEventListener('click', addToCart);
       const barAdd = $('[data-bar-add]');
       if (barAdd) barAdd.addEventListener('click', addToCart);
@@ -869,7 +883,7 @@
     const details = [...p.details];
     if (p.brand) details.push(['Znamka', p.brand]);
     if (p.sku) details.push(['Šifra', p.sku]);
-    details.push(['Kategorije', p.categories.map((c) => D.categoryNames[c] || c).join(', ')]);
+    details.push(['Kategorije', p.categories.map((c) => (D.categories[c] && D.categories[c].name) || D.categoryNames[c] || c).join(', ')]);
     $('[data-tab-details]', page).innerHTML = `<table class="spec">${details.map(([k, v]) => `<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join('')}</table>`;
 
     const tabs = $$('[role="tab"]', page);
@@ -901,9 +915,9 @@
 
     initReviews(p, page);
 
-    /* --- related: same category first, then the rest of Opornice --- */
+    /* --- related: same category first, then its parent, then Opornice --- */
     const seen = new Set([p.id]);
-    const related = [...popular(cat), ...popular(D.categories[ROOT_CAT])]
+    const related = [...popular(cat), ...(parent ? popular(parent) : []), ...popular(D.categories[ROOT_CAT])]
       .filter((r) => !seen.has(r.id) && seen.add(r.id))
       .slice(0, 4);
     $('[data-related]', page).innerHTML = related.map((r) => `<li class="shop-grid__item">${cardHTML(r, cat.slug)}</li>`).join('');
